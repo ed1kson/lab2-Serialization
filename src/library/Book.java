@@ -1,8 +1,10 @@
 package library;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class Book {
-    private static int nextId = 0;
+public class Book implements Serializable {
+    static int nextId = 0;
     private final int id;
     private String title;
     private String[] genres;
@@ -12,6 +14,7 @@ public class Book {
 
     public Book(String title, String[] genres, Author[] authors, int year) {
         id = nextId++;
+        readers = new ArrayList<>();
         this.genres = genres;
         this.title = title;
         this.authors = authors;
@@ -22,9 +25,11 @@ public class Book {
         return title;
     }
 
-    public Author[] getAuthors() {
-        return authors;
-    }
+    public Author[] getAuthors() { return authors; }
+    public String[] getGenres() { return genres; }
+    public ArrayList<Reader> getReaders() { return readers; }
+
+    public int getId() { return id; }
 
     public int getYear() {
         return year;
@@ -52,6 +57,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return "\"" + title + "\" by " + authors[0].getForename() + " " + authors[0].getSurename() + " (" + year + ")" + "; " + genres;
+        return "\"" + title + "\" by " + authors[0].getForename() + " " + authors[0].getSurename() + " (" + year + ")" + ", " + Arrays.toString(genres) + ", readers: " + readers.size();
     }
 }

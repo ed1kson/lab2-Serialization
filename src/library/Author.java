@@ -3,17 +3,32 @@ import java.util.ArrayList;
 
 
 public class Author extends Human {
+    static int nextId = 0;
+    private final int id;
     private ArrayList<Book> books;
-    
+    private String name;
 
-    public Author(String forename, String surename, int age, ArrayList<Book> books) {
+    public Author(String forename, String surename, String name, int age) {
+        super(forename, surename, age);
+        this.books = new ArrayList<>();
+        this.name = name;
+        id = nextId++;
+    }
+
+    public Author(String forename, String surename, String name, int age, ArrayList<Book> books) {
         super(forename, surename, age);
         this.books = books;
+        this.name = name;
+        id = nextId++;
     }
 
     public ArrayList<Book> getBooks() {
         return books;
     }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public int getId() { return id; }
 
     public void setBooks(ArrayList<Book> books) {
         this.books = books;

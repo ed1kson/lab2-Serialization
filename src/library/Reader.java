@@ -2,11 +2,27 @@ package library;
 import java.util.ArrayList;
 
 public class Reader extends Human {
+    static int nextId = 0;
+    private final int id;
     private ArrayList<Book> books;
 
     public Reader(String forename, String surename, int age) {
         super(forename, surename, age);
+        id = nextId++;
         this.books = new ArrayList<Book>();
+    }
+
+    public Reader(String forename, String surename, int age, Book[] books) {
+        this(forename, surename, age);
+        for ( Book book : books ) {
+            this.books.add(book);
+        }
+    }
+
+    public Reader(String forename, String surename, int age, Book book) {
+        this(forename, surename, age);
+        this.books = new ArrayList<Book>();
+        books.add(book);
     }
 
     public ArrayList<Book> getBooks() {
@@ -33,4 +49,5 @@ public class Reader extends Human {
         }
     }
 
+    public int getId() { return id; }
 }

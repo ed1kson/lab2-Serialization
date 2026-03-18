@@ -10,9 +10,10 @@ public class Shelf extends ArrayList<Book> {
         this.title = title;
     }
     
-    public Shelf (String genre) {
+    public Shelf (String title, String genre) {
         super();
         this.genre = genre;
+        this.title = title;
     }
 
     public void printInfo() {
