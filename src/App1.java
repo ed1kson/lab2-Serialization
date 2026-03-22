@@ -37,6 +37,8 @@ public class App1 {
         lib.deserialize("data/");
 
         lib.printInfo();
+
+        System.out.println(lib.getBook("Philosopher"));
     }
 
 }

@@ -175,9 +175,9 @@ public class Library implements Serializable {
 
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "data2.dat"));
             oos.writeObject(this);
-            // oos.writeInt(Book.nextId);
-            // oos.writeInt(Author.nextId);
-            // oos.writeInt(Reader.nextId);
+            oos.writeInt(Book.nextId);
+            oos.writeInt(Author.nextId);
+            oos.writeInt(Reader.nextId);
 
             oos.close();
         } catch ( Exception e ) {
@@ -198,9 +198,9 @@ public class Library implements Serializable {
             this.readers = lib.readers;
             this.shelfs = lib.shelfs;
 
-            // Book.nextId = ois.readInt();
-            // Author.nextId = ois.readInt();
-            // Reader.nextId = ois.readInt();
+            Book.nextId = ois.readInt();
+            Author.nextId = ois.readInt();
+            Reader.nextId = ois.readInt();
 
         } catch ( Exception e ) {
             System.out.println(e.getMessage());
@@ -210,9 +210,6 @@ public class Library implements Serializable {
 
     private void writeObject(ObjectOutputStream out ) throws IOException {
         out.defaultWriteObject();
-        out.writeInt(Book.nextId);
-        out.writeInt(Author.nextId);
-        out.writeInt(Reader.nextId);
 
         out.writeInt(authors.size());
         for ( Author author : authors ) {
@@ -285,6 +282,7 @@ public class Library implements Serializable {
                             b.getAuthors()[k] = a;
                         }
                     }
+                    a.addBook(b);
                     in.readUTF();in.readObject();in.readInt();in.readInt();
                     continue;
                 }
@@ -297,7 +295,7 @@ public class Library implements Serializable {
                 );
                 b.getAuthors()[0] = a;
                 a.addBook(b);
-                books.add(b);
+                this.books.add(b);
             }
 
             this.authors.add(a);
@@ -313,6 +311,8 @@ public class Library implements Serializable {
             int shelfBooks = in.readInt();
             for ( int k = 0 ; k < shelfBooks ; k++ ) {
                 shlf.add(getBook(in.readInt()));
+                in.readInt();
+                // System.out.println("wtf is this shit: " + getBook(in.readInt()));
             }
 
             this.shelfs.add(shlf);
