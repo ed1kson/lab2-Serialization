@@ -3,8 +3,6 @@ package library;
 import java.io.Serializable;
 
 public abstract class Human implements Serializable {
-    static int nextId = 0;
-    private final int id;
     private String forename;
     private String surename;
     private String name;
@@ -15,7 +13,6 @@ public abstract class Human implements Serializable {
         this.surename = surename;
         this.age = age;
         name = surename + " " + forename;
-        id = nextId++;
     }
 
     public String getName() { return name; }
