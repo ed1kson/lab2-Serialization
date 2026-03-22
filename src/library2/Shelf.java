@@ -1,7 +1,8 @@
 package library2;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Shelf extends ArrayList<Book> {
+public class Shelf extends ArrayList<Book> implements Serializable {
     private String genre, title;
     
     public Shelf(String title, String genre, ArrayList<Book> books) {

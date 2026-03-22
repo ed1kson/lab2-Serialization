@@ -1,16 +1,12 @@
 package library2;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
 public abstract class Human {
-    static transient int nextId = 0;
-    private transient final int id;
-    private transient String forename;
-    private transient String surename;
-    private transient String name;
-    private transient int age;
+    static int nextId = 0;
+    private final int id;
+    private String forename;
+    private String surename;
+    private String name;
+    private int age;
 
     public Human(String forename, String surename, int age) {
         this.forename = forename;

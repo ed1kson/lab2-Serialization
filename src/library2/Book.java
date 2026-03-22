@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Book {
+public class Book implements Serializable {
     static int nextId = 0;
     private final int id;
     private String title;

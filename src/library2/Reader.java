@@ -1,7 +1,8 @@
 package library2;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Reader extends Human {
+public class Reader extends Human implements Serializable {
     static int nextId = 0;
     private final int id;
     private ArrayList<Book> books;

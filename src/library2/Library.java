@@ -2,7 +2,7 @@ package library2;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Library {
+public class Library implements Serializable {
     private transient ArrayList<Shelf> shelfs;
     private transient ArrayList<Book> books;
     private transient ArrayList<Author> authors;
@@ -212,12 +212,12 @@ public class Library {
         out.writeInt(Author.nextId);
         out.writeInt(Reader.nextId);
 
-        out.writeObject(authors.size());
+        out.writeInt(authors.size());
         for ( Author author : authors ) {
-            out.writeObject(author.getId());
-            out.writeObject(author.getForename());
-            out.writeObject(author.getSurename());
-            out.writeObject(author.getName());
+            out.writeInt(author.getId());
+            out.writeUTF(author.getForename());
+            out.writeUTF(author.getSurename());
+            out.writeUTF(author.getName());
             out.writeInt(author.getAge());
             
             out.writeInt(author.getBooks().size());
@@ -235,17 +235,17 @@ public class Library {
             out.writeUTF(shlf.getTitle());
             out.writeUTF(shlf.getGenre());
 
-            out.writeObject(shlf.size());
+            out.writeInt(shlf.size());
             for (Book b : shlf ) {
-                out.writeObject(b.getId());
+                out.writeInt(b.getId());
             }
         }
 
-        out.writeObject(readers.size());
+        out.writeInt(readers.size());
         for ( Reader reader : readers ) {
             out.writeInt(reader.getId());
-            out.writeObject(reader.getForename());
-            out.writeObject(reader.getSurename());
+            out.writeUTF(reader.getForename());
+            out.writeUTF(reader.getSurename());
             out.writeInt(reader.getAge());
 
             out.writeInt(reader.getBooks().size());
@@ -293,38 +293,38 @@ public class Library {
                 a.addBook(b);
                 books.add(b);
             }
+        }
 
-            int shelfs = in.readInt();
-            for ( int j = 0 ; j<shelfs ; j++ ) {
-                Shelf shlf = new Shelf(
-                    in.readUTF(),
-                    in.readUTF()
-                );
-                
-                int shelfBooks = in.readInt();
-                for ( int k = 0 ; k < shelfBooks ; k++ ) {
-                    shlf.add(getBook(in.readInt()));
-                }
-
-                this.shelfs.add(shlf);
-            }
-
-            int readers = in.readInt();
-            for ( int j = 0 ; j < readers ; j++ ) {
-                Reader reader = new Reader(
-                    in.readInt(),
-                    in.readUTF(),
-                    in.readUTF(),
-                    in.readInt()
-                );
-
-                int readerBooks = in.readInt();
-                for ( int k = 0 ; k < readerBooks ; k++ ) {
-                    reader.addBook(getBook(in.readInt()));
-                }
+        int shelfs = in.readInt();
+        for ( int j = 0 ; j<shelfs ; j++ ) {
+            Shelf shlf = new Shelf(
+                in.readUTF(),
+                in.readUTF()
+            );
             
-                this.readers.add(reader);
+            int shelfBooks = in.readInt();
+            for ( int k = 0 ; k < shelfBooks ; k++ ) {
+                shlf.add(getBook(in.readInt()));
             }
+
+            this.shelfs.add(shlf);
+        }
+
+        int readers = in.readInt();
+        for ( int j = 0 ; j < readers ; j++ ) {
+            Reader reader = new Reader(
+                in.readInt(),
+                in.readUTF(),
+                in.readUTF(),
+                in.readInt()
+            );
+
+            int readerBooks = in.readInt();
+            for ( int k = 0 ; k < readerBooks ; k++ ) {
+                reader.addBook(getBook(in.readInt()));
+            }
+        
+            this.readers.add(reader);
         }
     }
 }
