@@ -175,6 +175,9 @@ public class Library implements Serializable {
 
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "data1.dat"));
             oos.writeObject(this);
+            oos.writeInt(Book.nextId);
+            oos.writeInt(Author.nextId);
+            oos.writeInt(Reader.nextId);
 
             oos.close();
         } catch ( Exception e ) {
@@ -193,6 +196,11 @@ public class Library implements Serializable {
             this.books = lib.books;
             this.readers = lib.readers;
             this.shelfs = lib.shelfs;
+
+            Book.nextId = ois.readInt();
+            Author.nextId = ois.readInt();
+            Reader.nextId = ois.readInt();
+
         } catch ( Exception e ) {
             e.printStackTrace();
         }
