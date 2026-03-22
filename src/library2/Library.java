@@ -181,6 +181,7 @@ public class Library implements Serializable {
 
             oos.close();
         } catch ( Exception e ) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -202,6 +203,7 @@ public class Library implements Serializable {
             // Reader.nextId = ois.readInt();
 
         } catch ( Exception e ) {
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -230,7 +232,7 @@ public class Library implements Serializable {
             }
         }
 
-        out.writeObject(shelfs.size());
+        out.writeInt(shelfs.size());
         for ( Shelf shlf : shelfs ) {
             out.writeUTF(shlf.getTitle());
             out.writeUTF(shlf.getGenre());
@@ -258,7 +260,11 @@ public class Library implements Serializable {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
 
-        authors = new ArrayList<>();
+        this.authors = new ArrayList<Author>();
+        this.books = new ArrayList<Book>();
+        this.readers = new ArrayList<Reader>();
+        this.shelfs = new ArrayList<Shelf>();
+
         int LibAuthors = in.readInt();
         for ( int i = 0 ; i < LibAuthors ; i++ ) {
             Author a = new Author(
@@ -293,6 +299,8 @@ public class Library implements Serializable {
                 a.addBook(b);
                 books.add(b);
             }
+
+            this.authors.add(a);
         }
 
         int shelfs = in.readInt();
