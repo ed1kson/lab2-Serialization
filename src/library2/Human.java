@@ -1,7 +1,5 @@
 package library2;
 
-import java.io.Serializable;
-
 public abstract class Human {
     private String forename;
     private String surename;
