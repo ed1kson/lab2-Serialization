@@ -72,7 +72,7 @@ public class Book implements Externalizable {
         if ( !reader.getBooks().contains(this) ) {
             reader.addBook(this);
         }
-    } 
+    }
 
     public void removeReader(Reader reader) {
         this.readers.remove(reader);

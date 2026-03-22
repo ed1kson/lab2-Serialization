@@ -24,6 +24,8 @@ public class Library implements Serializable {
         }
     }
 
+    public ArrayList<Book> getBooks() { return books; }
+
     public Author getAuthor(String name) {
         name = name.toLowerCase();
 

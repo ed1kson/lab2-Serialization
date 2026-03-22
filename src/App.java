@@ -1,6 +1,6 @@
 import library3.*;
 
-public class App1 {
+public class App {
     static Library lib = new Library();
     public static void main(String[] args) throws Exception {
         enterdata();
@@ -15,7 +15,7 @@ public class App1 {
         }
 
         System.out.println("\bbooks: ");
-        for ( Book b : lib.books ) {
+        for ( Book b : lib.getBooks()) {
             System.out.println("   -"+b);
         }
 
@@ -24,38 +24,10 @@ public class App1 {
         for ( Author a : lib.getBook(book).getAuthors()) {
             System.out.println("   -"+a);
         }
-
     }
 
     static void enterdata() {
-        // lib.addShelf(new Shelf("Harry potter", "fantasy"));
-        // lib.addBook(new Book(
-        //     "Harry Potter and philosopher's stone",
-        // new String[]{"fantasy", "children's literature"},
-        // new Author[]{new Author(
-        //     "Joanne",
-        //     "Rowling",
-        //     "J. K. Rowling",
-        //     60
-        // )},
-        // 1997
-        // ), "Harry Potter");
-
-        // lib.addBook(new Book(
-        //     "Harry Potter and the Chamber of Secrets",
-        //     new String[]{"fantasy", "children's literature"},
-        //     new Author[]{lib.getAuthor("Rowling")},
-        //     1998
-        // ), "Harry potter");
-
-        // lib.addReader(new Reader(
-        //     "Eduard",
-        //     "Oplakanskyi",
-        //     18,
-        //     lib.getBook("Philosopher")
-        // ));
         //pryklady
-
             // 1. Додаємо 3 нові полички (разом з існуючою "Harry potter" буде 4)
             lib.addShelf(new Shelf("Dystopian Future", "dystopia"));
             lib.addShelf(new Shelf("Science Fiction", "sci-fi"));

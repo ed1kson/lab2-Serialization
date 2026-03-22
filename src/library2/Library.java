@@ -24,6 +24,8 @@ public class Library implements Serializable {
         }
     }
 
+    public ArrayList<Book> getBooks() { return books; }
+
     public Author getAuthor(String name) {
         name = name.toLowerCase();
 
@@ -222,12 +224,10 @@ public class Library implements Serializable {
             out.writeInt(author.getAge());
             
             out.writeInt(author.getBooks().size());
-            System.out.println(author.getName()+": "+author.getBooks().size());
             for ( Book b : author.getBooks() ) {
                 out.writeInt(b.getId());
                 out.writeUTF(b.getTitle());
                 out.writeObject(b.getGenres());
-                // out.writeInt(b.getAuthors().length);
                 out.writeInt(b.getYear());
             }
         }
@@ -277,7 +277,6 @@ public class Library implements Serializable {
 
             
             int AuthorBooks = in.readInt();
-            System.out.println("bookscount: " + AuthorBooks);
             for ( int j = 0 ; j<AuthorBooks ; j++ ) {
                 int bookId = in.readInt();
                 if ( getBook(bookId) != null ) {
@@ -301,7 +300,6 @@ public class Library implements Serializable {
                 );
                 b.getAuthors()[0] = a;
                 // a.addBook(b);
-                System.out.println("boooooooook: "+ b);
                 this.books.add(b);
             }
 

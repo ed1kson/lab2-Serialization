@@ -24,6 +24,8 @@ public class Library implements Externalizable {
         }
     }
 
+    public ArrayList<Book> getBooks() { return books; }
+
     public Author getAuthor(String name) {
         name = name.toLowerCase();
 
@@ -211,137 +213,6 @@ public class Library implements Externalizable {
         } catch ( Exception e ) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    private void writeObject(ObjectOutputStream out ) throws IOException {
-        out.defaultWriteObject();
-
-        out.writeInt(authors.size());
-        for ( Author author : authors ) {
-            out.writeInt(author.getId());
-            out.writeUTF(author.getForename());
-            out.writeUTF(author.getSurename());
-            out.writeUTF(author.getName());
-            out.writeInt(author.getAge());
-            
-            out.writeInt(author.getBooks().size());
-            System.out.println(author.getName()+": "+author.getBooks().size());
-            for ( Book b : author.getBooks() ) {
-                out.writeInt(b.getId());
-                out.writeUTF(b.getTitle());
-                out.writeObject(b.getGenres());
-                out.writeInt(b.getYear());
-            }
-        }
-
-        out.writeInt(shelfs.size());
-        for ( Shelf shlf : shelfs ) {
-            out.writeUTF(shlf.getTitle());
-            out.writeUTF(shlf.getGenre());
-
-            out.writeInt(shlf.size());
-            for (Book b : shlf ) {
-                out.writeInt(b.getId());
-            }
-        }
-
-        out.writeInt(readers.size());
-        for ( Reader reader : readers ) {
-            out.writeInt(reader.getId());
-            out.writeUTF(reader.getForename());
-            out.writeUTF(reader.getSurename());
-            out.writeInt(reader.getAge());
-
-            out.writeInt(reader.getBooks().size());
-            for ( Book b : reader.getBooks() ) {
-                out.writeInt(b.getId());
-            }
-        }
-    }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-
-        this.authors = new ArrayList<Author>();
-        this.books = new ArrayList<Book>();
-        this.readers = new ArrayList<Reader>();
-        this.shelfs = new ArrayList<Shelf>();
-
-        int LibAuthors = in.readInt();
-        for ( int i = 0 ; i < LibAuthors ; i++ ) {
-            Author a = new Author(
-                in.readInt(), //id
-                in.readUTF(), //forename
-                in.readUTF(), //surename
-                in.readUTF(), //name
-                in.readInt() //age
-            );
-
-            
-            int AuthorBooks = in.readInt();
-            System.out.println("bookscount: " + AuthorBooks);
-            for ( int j = 0 ; j<AuthorBooks ; j++ ) {
-                int bookId = in.readInt();
-                if ( getBook(bookId) != null ) {
-                    Book b = getBook(bookId);
-
-                    Author[] newAuthors = new Author[b.getAuthors().length + 1];
-                    System.arraycopy(b.getAuthors(), 0, newAuthors, 0, b.getAuthors().length);
-                    newAuthors[b.getAuthors().length] = a;
-                    b.setAuthors(newAuthors);
-
-                    // a.addBook(b);
-                    in.readUTF();in.readObject();in.readInt();in.readInt();
-                    continue;
-                }
-                Book b = new Book(
-                    bookId, // id
-                    in.readUTF(), // title 
-                    (String[]) in.readObject(), // Genres[]
-                    new Author[]{a}, // Author[in.readInt()]
-                    in.readInt() // year
-                );
-                b.getAuthors()[0] = a;
-                // a.addBook(b);
-                System.out.println("boooooooook: "+ b);
-                this.books.add(b);
-            }
-
-            this.authors.add(a);
-        }
-
-        int shelfs = in.readInt();
-        for ( int j = 0 ; j<shelfs ; j++ ) {
-            Shelf shlf = new Shelf(
-                in.readUTF(),
-                in.readUTF()
-            );
-            
-            int shelfBooks = in.readInt();
-            for ( int k = 0 ; k < shelfBooks ; k++ ) {
-                int int1 = in.readInt();
-                shlf.add(getBook(int1));
-            }
-
-            this.shelfs.add(shlf);
-        }
-
-        int readers = in.readInt();
-        for ( int j = 0 ; j < readers ; j++ ) {
-            Reader reader = new Reader(
-                in.readInt(),
-                in.readUTF(),
-                in.readUTF(),
-                in.readInt()
-            );
-
-            int readerBooks = in.readInt();
-            for ( int k = 0 ; k < readerBooks ; k++ ) {
-                reader.addBook(getBook(in.readInt()));
-            }
-        
-            this.readers.add(reader);
         }
     }
 

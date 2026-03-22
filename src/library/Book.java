@@ -19,6 +19,9 @@ public class Book implements Serializable {
         this.title = title;
         this.authors = authors;
         this.year = year;
+        for ( Author a : authors ) {
+            a.addBook(this);
+        }
     }
 
     public String getTitle() {
@@ -49,10 +52,14 @@ public class Book implements Serializable {
 
     public void addReader(Reader reader) {
         this.readers.add(reader);
+        if ( !reader.getBooks().contains(this) ) {
+            reader.addBook(this);
+        }
     } 
 
     public void removeReader(Reader reader) {
         this.readers.remove(reader);
+        reader.removeBook(this);
     }
 
     @Override

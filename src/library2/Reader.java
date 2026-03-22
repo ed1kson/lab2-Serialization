@@ -37,10 +37,14 @@ public class Reader extends Human {
 
     public void addBook(Book book) {
         this.books.add(book);
+        if ( !book.getReaders().contains(this) ) {
+            book.addReader(this);
+        }
     }
 
     public void removeBook(Book book) {
         this.books.remove(book);
+        book.removeReader(this);
     }
 
     public void setBooks(ArrayList<Book> books) {

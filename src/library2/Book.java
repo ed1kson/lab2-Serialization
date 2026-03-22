@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Book implements Serializable {
+public class Book {
     static int nextId = 0;
     private final int id;
     private String title;
@@ -63,10 +63,14 @@ public class Book implements Serializable {
 
     public void addReader(Reader reader) {
         this.readers.add(reader);
-    } 
+        if ( !reader.getBooks().contains(this) ) {
+            reader.addBook(this);
+        }
+    }
 
     public void removeReader(Reader reader) {
         this.readers.remove(reader);
+        reader.removeBook(this);
     }
 
     @Override
