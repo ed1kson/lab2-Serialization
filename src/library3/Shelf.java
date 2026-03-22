@@ -1,8 +1,14 @@
 package library3;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 
-public class Shelf extends ArrayList<Book>{
+public class Shelf extends ArrayList<Book> implements Externalizable{
     private String genre, title;
+    
+    Shelf() { super(); }
     
     public Shelf(String title, String genre, ArrayList<Book> books) {
         super(books);
@@ -33,4 +39,15 @@ public class Shelf extends ArrayList<Book>{
         return "Shelf " + title + ", genre: " + genre;
     }
 
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeUTF(title);
+        out.writeUTF(genre);
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        title = in.readUTF();
+        genre = in.readUTF();
+    }
 }

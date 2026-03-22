@@ -1,10 +1,10 @@
-import library2.*;
+import library3.*;
 
 public class App1 {
     static Library lib = new Library();
     public static void main(String[] args) throws Exception {
-        // enterdata();
-        // lib.serialize("data/");
+        enterdata();
+        lib.serialize("data/");
         lib.deserialize("data/");
         lib.printInfo();
 
@@ -12,6 +12,17 @@ public class App1 {
         System.out.println(author+":");
         for ( Book b : lib.getAuthor("asimov").getBooks() ) {
             System.out.println("   -"+b);
+        }
+
+        System.out.println("\bbooks: ");
+        for ( Book b : lib.books ) {
+            System.out.println("   -"+b);
+        }
+
+        String book = "Foundation";
+        System.out.println(book);
+        for ( Author a : lib.getBook(book).getAuthors()) {
+            System.out.println("   -"+a);
         }
 
     }

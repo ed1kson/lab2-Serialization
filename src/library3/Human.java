@@ -1,8 +1,8 @@
-package library2;
+package library3;
 
-import java.io.Serializable;
+import java.io.Externalizable;
 
-public abstract class Human implements Serializable {
+public abstract class Human implements Externalizable {
     private String forename;
     private String surename;
     private String name;

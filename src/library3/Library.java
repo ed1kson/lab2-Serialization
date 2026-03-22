@@ -1,8 +1,8 @@
-package library2;
+package library3;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Library implements Serializable {
+public class Library implements Externalizable {
     private transient ArrayList<Shelf> shelfs;
     public transient ArrayList<Book> books;
     private transient ArrayList<Author> authors;
@@ -66,6 +66,7 @@ public class Library implements Serializable {
         String genre = book.getGenres()[0];
         Shelf newShelf = new Shelf(genre+" shelf", genre);
         newShelf.add(book);
+        books.add(book);
         shelfs.add(newShelf);
     }
 
@@ -89,6 +90,7 @@ public class Library implements Serializable {
     }
 
     public void printInfo() {
+        System.out.println("Readers: " + readers.size());
         System.out.println("Books in the library: " + books.size());
         System.out.println("Authors: ");
         for ( Author author : authors ) {
@@ -141,6 +143,7 @@ public class Library implements Serializable {
     public void deleteReader(Reader reader) {
         for ( Book book : books ) {
             book.removeReader(reader);
+            reader.removeBook(book);
         }
 
         readers.remove(reader);
@@ -175,8 +178,8 @@ public class Library implements Serializable {
                 dir.mkdirs();
             }
 
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "data2.dat"));
-            oos.writeObject(this);
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path + "data3.dat"));
+            writeExternal(oos);
             oos.writeInt(Book.nextId);
             oos.writeInt(Author.nextId);
             oos.writeInt(Reader.nextId);
@@ -193,8 +196,9 @@ public class Library implements Serializable {
     }
 
     public void deserialize(String path) {
-        try ( ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path + "data2.dat")) ) {
-            Library lib = (Library) ois.readObject();
+        try ( ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path + "data3.dat")) ) {
+            Library lib = new Library();
+            lib.readExternal(ois);
             this.authors = lib.authors;
             this.books = lib.books;
             this.readers = lib.readers;
@@ -227,7 +231,6 @@ public class Library implements Serializable {
                 out.writeInt(b.getId());
                 out.writeUTF(b.getTitle());
                 out.writeObject(b.getGenres());
-                // out.writeInt(b.getAuthors().length);
                 out.writeInt(b.getYear());
             }
         }
@@ -340,5 +343,93 @@ public class Library implements Serializable {
         
             this.readers.add(reader);
         }
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeInt(shelfs.size()); // 1
+        for ( Shelf shlf : shelfs ) { // shelfs.size() times 
+            shlf.writeExternal(out); // 2
+            
+            out.writeInt(shlf.size()); // 3
+            for (Book b : shlf) {
+                b.writeExternal(out); // 4 
+            }
+        }
+
+        out.writeInt(authors.size());
+        for ( Author a : authors ) {
+            a.writeExternal(out);
+        }
+
+        out.writeInt(readers.size());
+        for ( Reader r : readers ) {
+            r.writeExternal(out);
+        }
+
+        out.writeInt(books.size());
+        for ( Book b : books ) {
+            out.writeInt(b.getId());
+
+            for ( Author a : b.getAuthors() ) {
+                out.writeInt(a.getId());
+            }
+
+            out.writeInt(b.getReaders().size());
+            for ( Reader r : b.getReaders() ) {
+                out.writeInt(r.getId());
+            }
+        }
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        int shelfCount = in.readInt(); // 1
+        for ( int j = 0 ; j < shelfCount ; j++ ) {
+            Shelf shlf = new Shelf();
+            shlf.readExternal(in); // 2
+
+            int shlfBookCount = in.readInt(); // 3 
+            for ( int i = 0 ; i < shlfBookCount ; i++ ) {
+                Book b = new Book();
+                b.readExternal(in); // 4 
+                books.add(b);
+                shlf.add(b);
+            }
+
+            shelfs.add(shlf);
+        }
+
+        int authorCount = in.readInt();
+        for ( int i = 0 ; i < authorCount ; i++ ) {
+            Author b = new Author();
+            b.readExternal(in);
+            authors.add(b);
+        }
+
+        int readerCount = in.readInt();
+        for ( int i = 0 ; i < readerCount ; i++ ) {
+            Reader b = new Reader();
+            b.readExternal(in);
+            readers.add(b);
+        }
+
+        int bookCount = in.readInt();
+        for ( int i = 0 ; i < bookCount ; i++ ) {
+            Book b = getBook(in.readInt());
+            
+            for ( int j = 0 ; j<b.getAuthors().length ; j++ ) {
+                Author a = getAuthor(in.readInt());
+                b.getAuthors()[j] = a;
+                a.addBook(b);
+            }
+
+            int bookAuthorCount = in.readInt();
+            for ( int j = 0 ; j<bookAuthorCount ; j++ ) {
+                b.addReader(getReader(in.readInt()));
+            }
+        }
+        
+
     }
 }
