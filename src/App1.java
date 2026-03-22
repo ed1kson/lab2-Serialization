@@ -1,36 +1,49 @@
 import library2.*;
 
 public class App1 {
+    static Library lib = new Library();
     public static void main(String[] args) throws Exception {
-        Library lib = new Library();
-        lib.addShelf(new Shelf("Harry potter", "fantasy"));
-        lib.addBook(new Book(
-            "Harry Potter and philosopher's stone",
-        new String[]{"fantasy", "children's literature"},
-        new Author[]{new Author(
-            "Joanne",
-            "Rowling",
-            "J. K. Rowling",
-            60
-        )},
-        1997
-        ), "Harry Potter");
+        // enterdata();
+        // lib.serialize("data/");
+        lib.deserialize("data/");
+        lib.printInfo();
 
-        lib.addBook(new Book(
-            "Harry Potter and the Chamber of Secrets",
-            new String[]{"fantasy", "children's literature"},
-            new Author[]{lib.getAuthor("Rowling")},
-            1998
-        ), "Harry potter");
+        String author = "asimov";
+        System.out.println(author+":");
+        for ( Book b : lib.getAuthor("asimov").getBooks() ) {
+            System.out.println("   -"+b);
+        }
 
-        lib.addReader(new Reader(
-            "Eduard",
-            "Oplakanskyi",
-            18,
-            lib.getBook("Philosopher")
-        ));
+    }
+
+    static void enterdata() {
+        // lib.addShelf(new Shelf("Harry potter", "fantasy"));
+        // lib.addBook(new Book(
+        //     "Harry Potter and philosopher's stone",
+        // new String[]{"fantasy", "children's literature"},
+        // new Author[]{new Author(
+        //     "Joanne",
+        //     "Rowling",
+        //     "J. K. Rowling",
+        //     60
+        // )},
+        // 1997
+        // ), "Harry Potter");
+
+        // lib.addBook(new Book(
+        //     "Harry Potter and the Chamber of Secrets",
+        //     new String[]{"fantasy", "children's literature"},
+        //     new Author[]{lib.getAuthor("Rowling")},
+        //     1998
+        // ), "Harry potter");
+
+        // lib.addReader(new Reader(
+        //     "Eduard",
+        //     "Oplakanskyi",
+        //     18,
+        //     lib.getBook("Philosopher")
+        // ));
         //pryklady
-            System.out.println("=== Наповнення бібліотеки новими даними ===");
 
             // 1. Додаємо 3 нові полички (разом з існуючою "Harry potter" буде 4)
             lib.addShelf(new Shelf("Dystopian Future", "dystopia"));
@@ -76,15 +89,6 @@ public class App1 {
         //pryklady
 
         // lib.deleteReader(lib.getReader("Oplakansk"));
-
-        lib.serialize("data/");
-        
-        lib.deserialize("data/");
-
-        lib.printInfo();
-
-        System.out.println(lib.getBook("Philosopher"));
-        System.out.println(lib.books);
     }
 
 }
