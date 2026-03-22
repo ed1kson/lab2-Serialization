@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Library implements Serializable {
     private transient ArrayList<Shelf> shelfs;
-    private transient ArrayList<Book> books;
+    public transient ArrayList<Book> books;
     private transient ArrayList<Author> authors;
     private transient ArrayList<Reader> readers;
 
@@ -310,9 +310,10 @@ public class Library implements Serializable {
             
             int shelfBooks = in.readInt();
             for ( int k = 0 ; k < shelfBooks ; k++ ) {
-                shlf.add(getBook(in.readInt()));
-                in.readInt();
-                // System.out.println("wtf is this shit: " + getBook(in.readInt()));
+                int int1 = in.readInt();
+                // System.out.println("what: " + int1);
+                shlf.add(getBook(int1));
+                // System.out.println("what2: "+ in.readInt() );
             }
 
             this.shelfs.add(shlf);
